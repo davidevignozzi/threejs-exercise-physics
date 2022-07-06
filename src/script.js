@@ -21,7 +21,8 @@ const scene = new THREE.Scene()
 /**
  * Physics
  */
- const world = new CANNON.World()
+ const world = new CANNON.World();
+ world.gravity.set(0, - 9.82, 0); // - 9.82 as the value because it's the gravity constant on earth
 
 /**
  * Textures
