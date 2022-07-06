@@ -40,18 +40,42 @@ const environmentMapTexture = cubeTextureLoader.load([
  const world = new CANNON.World();
  world.gravity.set(0, - 9.82, 0); // - 9.82 as the value because it's the gravity constant on earth
 
+ // Materials
+ const defaultMaterial = new CANNON.Material('default');
+//  const concreteMaterial = new CANNON.Material('concrete');
+//  const plasticMaterial = new CANNON.Material('plastic');
+
+//  const concretePlasticContactMaterial = new CANNON.ContactMaterial(
+    const defaultContactMaterial = new CANNON.ContactMaterial(
+    // concreteMaterial, // Material 1
+    // plasticMaterial, // Material 2
+
+    defaultMaterial,
+    defaultMaterial,
+    {
+        // What appen when materials collide
+        friction: 0.1,
+        restitution: 0.7
+    }
+);
+// world.addContactMaterial(concretePlasticContactMaterial);
+world.addContactMaterial(defaultContactMaterial);
+world.defaultContactMaterial = defaultContactMaterial
+
  // Sphere
  const sphereShape = new CANNON.Sphere(0.5);
  const sphereBody = new CANNON.Body({
     mass: 1,
     position: new CANNON.Vec3(0, 3, 0),
-    shape: sphereShape
+    shape: sphereShape,
+    // material: plasticMaterial
 });
 world.addBody(sphereBody);
 
 // Plane
 const floorShape = new CANNON.Plane();
 const floorBody = new CANNON.Body();
+// floorBody.material = concreteMaterial;
 floorBody.mass = 0;
 floorBody.addShape(floorShape);
 world.addBody(floorBody);
