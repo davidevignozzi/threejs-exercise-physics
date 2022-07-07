@@ -73,6 +73,7 @@ world.defaultContactMaterial = defaultContactMaterial
 });
 sphereBody.applyLocalForce(new CANNON.Vec3(150, 0, 0), new CANNON.Vec3(0, 0, 0));
 world.addBody(sphereBody);
+*/
 
 // Plane
 const floorShape = new CANNON.Plane();
@@ -82,7 +83,7 @@ floorBody.mass = 0;
 floorBody.addShape(floorShape);
 world.addBody(floorBody);
 floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(- 1, 0, 0), Math.PI * 0.5);
- */ 
+
 
 /**
  * Test sphere
@@ -248,6 +249,10 @@ const tick = () =>
         )
     */
     // sphere.position.copy(sphereBody.position);
+
+    for(const object of objectToUpdate) {
+        object.mesh.position.copy(object.body.position);
+    }
 
     // Update controls
     controls.update()
