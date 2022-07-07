@@ -62,6 +62,7 @@ const environmentMapTexture = cubeTextureLoader.load([
 world.addContactMaterial(defaultContactMaterial);
 world.defaultContactMaterial = defaultContactMaterial
 
+/* 
  // Sphere
  const sphereShape = new CANNON.Sphere(0.5);
  const sphereBody = new CANNON.Body({
@@ -81,11 +82,12 @@ floorBody.mass = 0;
 floorBody.addShape(floorShape);
 world.addBody(floorBody);
 floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(- 1, 0, 0), Math.PI * 0.5);
- 
+ */ 
 
 /**
  * Test sphere
  */
+/* 
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 32, 32),
     new THREE.MeshStandardMaterial({
@@ -98,6 +100,7 @@ const sphere = new THREE.Mesh(
 sphere.castShadow = true
 sphere.position.y = 0.5
 scene.add(sphere)
+ */
 
 /**
  * Floor
@@ -180,6 +183,39 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 /**
+ * Utils
+ */
+// *** Function that create a sphere in Three.js and in the physics world
+const createSphere = (radius, position) =>{
+    // Three.js mesh
+    const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(radius, 20, 20),
+        new THREE.MeshStandardMaterial({
+            metalness: 0.3,
+            roughness: 0.4,
+            envMap: environmentMapTexture,
+            envMapIntensity: 0.5
+        })
+    );
+    mesh.castShadow = true;
+    mesh.position.copy(position);
+    scene.add(mesh);
+
+    // Cannon.js body
+    const shape = new CANNON.Sphere(radius);
+
+    const body = new CANNON.Body({
+        mass: 1,
+        position: new CANNON.Vec3(0, 3, 0),
+        shape: shape,
+        material: defaultMaterial
+    });
+    body.position.copy(position);
+    world.addBody(body);
+}
+createSphere(0.5, { x: 0, y: 3, z: 0 });
+
+/**
  * Animate
  */
 const clock = new THREE.Clock()
@@ -193,7 +229,7 @@ const tick = () =>
 
     // Update physics world
     // ? Wind
-    sphereBody.applyForce(new CANNON.Vec3(- 0.5, 0, 0), sphereBody.position)
+    // sphereBody.applyForce(new CANNON.Vec3(- 0.5, 0, 0), sphereBody.position)
 
     world.step(1 / 60, deltaTime, 3);
     /*
@@ -203,7 +239,7 @@ const tick = () =>
             How much iterations the world can applay to catch up with a potential delay
         )
     */
-    sphere.position.copy(sphereBody.position);
+    // sphere.position.copy(sphereBody.position);
 
     // Update controls
     controls.update()
