@@ -185,6 +185,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /**
  * Utils
  */
+const objectToUpdate = [];
+
 // *** Function that create a sphere in Three.js and in the physics world
 const createSphere = (radius, position) =>{
     // Three.js mesh
@@ -212,6 +214,12 @@ const createSphere = (radius, position) =>{
     });
     body.position.copy(position);
     world.addBody(body);
+
+    // save in objectToUpdate
+    objectToUpdate.push({
+        mesh: mesh,
+        body: body
+    });
 }
 createSphere(0.5, { x: 0, y: 3, z: 0 });
 
