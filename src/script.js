@@ -36,6 +36,20 @@ debugObject.createBox = () => {
 };
 gui.add(debugObject, 'createBox').name('Create a Box');
 
+// Reset
+debugObject.reset = () => {
+    for(const object of objectsToUpdate){
+        // Remove body
+        object.body.removeEventListener('collide', playHitSound);
+        world.removeBody(object.body);
+
+        // Remove mesh
+        scene.remove(object.mesh);
+    }
+    objectsToUpdate.splice(0, objectsToUpdate.length);
+}
+gui.add(debugObject, 'reset').name('Reset');
+
 /**
  * Base
  */
@@ -230,7 +244,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /**
  * Utils
  */
-const objectToUpdate = [];
+const objectsToUpdate = [];
 
 // *** Function that create a sphere in Three.js and in the physics world
 // Sphere
@@ -262,8 +276,8 @@ const createSphere = (radius, position) =>{
     body.addEventListener('collide', playHitSound);
     world.addBody(body);
 
-    // save in objectToUpdate
-    objectToUpdate.push({
+    // save in objectsToUpdate
+    objectsToUpdate.push({
         mesh: mesh,
         body: body
     });
@@ -300,8 +314,8 @@ const createBox = (width, height, depth, position) =>{
     body.addEventListener('collide', playHitSound);
     world.addBody(body);
 
-    // save in objectToUpdate
-    objectToUpdate.push({
+    // save in objectsToUpdate
+    objectsToUpdate.push({
         mesh: mesh,
         body: body
     });
@@ -333,7 +347,7 @@ const tick = () =>
     */
     // sphere.position.copy(sphereBody.position);
 
-    for(const object of objectToUpdate) {
+    for(const object of objectsToUpdate) {
         object.mesh.position.copy(object.body.position);
         object.mesh.quaternion.copy(object.body.quaternion);
     }
