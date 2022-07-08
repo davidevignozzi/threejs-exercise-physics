@@ -65,8 +65,9 @@ const environmentMapTexture = cubeTextureLoader.load([
  */
 // World
  const world = new CANNON.World();
- world.gravity.set(0, - 9.82, 0); // - 9.82 as the value because it's the gravity constant on earth
  world.broadphase = new CANNON.SAPBroadphase(world);
+ world.allowSleep = true;
+ world.gravity.set(0, - 9.82, 0); // - 9.82 as the value because it's the gravity constant on earth
 
  // Materials
  const defaultMaterial = new CANNON.Material('default');
